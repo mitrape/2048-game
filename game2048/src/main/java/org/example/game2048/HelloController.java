@@ -1,54 +1,25 @@
 package org.example.game2048;
 
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
+import javax.swing.JOptionPane;
 
 public class HelloController implements Initializable {
     @FXML
-    public Label l00;
-    @FXML
-    public Label l01;
-    @FXML
-    public Label l02;
-    @FXML
-    public Label l03;
-    @FXML
-    public Label l10;
-    @FXML
-    public Label l11;
-    @FXML
-    public Label l12;
-    @FXML
-    public Label l13;
-    @FXML
-    public Label l20;
-    @FXML
-    public Label l21;
-    @FXML
-    public Label l22;
-    @FXML
-    public Label l23;
-    @FXML
-    public Label l30;
-    @FXML
-    public Label l31;
-    @FXML
-    public Label l32;
-    @FXML
-    public Label l33;
-
+    public Label l00, l01, l02,l03,l10,l11,l12,l13,l20,l21,l22,l23,l30,l31,l32,l33;
     @FXML
     public Label score;
-
-
     Node head;
+    Stack Undo = new Stack();
+    Stack Redo = new Stack();
+    int countUndo = 0;
+    int countRedo = 0;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -62,255 +33,340 @@ public class HelloController implements Initializable {
         int lastScore = Integer.parseInt(score.getText());
         score.setText(String.valueOf(lastScore+X));
     }
-    public void moveUp() {
-        for (int col = 0; col < 4; col++) {
-            Node[] columnNodes = new Node[4];
-            int index = 0;
-
-            // Collect nodes from the current column
-            Node current = head;
-            Node previous = null;
-            while (current != null) {
-                if (current.col == col) {
-                    columnNodes[index++] = current;
-                    if (previous == null) {
-                        head = current.next;
-                    } else {
-                        previous.next = current.next;
-                    }
-                } else {
-                    previous = current;
-                }
-                current = current.next;
-            }
-
-            // Move and combine nodes
-            int targetIndex = 0;
-            for (int i = 0; i < index; i++) {
-                if (columnNodes[i] != null) {
-                    if (targetIndex > 0 && columnNodes[targetIndex - 1].value == columnNodes[i].value) {
-                        columnNodes[targetIndex - 1].value *= 2;
-                        setScore(columnNodes[targetIndex - 1].value);
-                        columnNodes[i] = null; // Remove the combined node
-                    } else {
-                        columnNodes[targetIndex++] = columnNodes[i];
-                    }
-                }
-            }
-
-            // Update positions and reattach the nodes
-            Node lastNode = null;
-            for (int i = 0; i < targetIndex; i++) {
-                columnNodes[i].row = i;
-                columnNodes[i].next = null;
-                if (lastNode == null) {
-                    if (head == null) {
-                        head = columnNodes[i];
-                    } else {
-                        Node temp = head;
-                        while (temp.next != null) {
-                            temp = temp.next;
-                        }
-                        temp.next = columnNodes[i];
-                    }
-                } else {
-                    lastNode.next = columnNodes[i];
-                }
-                lastNode = columnNodes[i];
-            }
-            if (targetIndex > 0) {
-                lastNode.next = null;
-            }
-        }
-        addNewTail();
-    }
-    public void moveDown() {
-        for (int col = 0; col < 4; col++) {
-            Node[] columnNodes = new Node[4];
-            int index = 0;
-
-            // Collect nodes from the current column
-            Node current = head;
-            Node previous = null;
-            while (current != null) {
-                if (current.col == col) {
-                    columnNodes[index++] = current;
-                    if (previous == null) {
-                        head = current.next;
-                    } else {
-                        previous.next = current.next;
-                    }
-                } else {
-                    previous = current;
-                }
-                current = current.next;
-            }
-
-            // Move and combine nodes
-            int targetIndex = 3;
-            for (int i = index - 1; i >= 0; i--) {
-                if (columnNodes[i] != null) {
-                    if (targetIndex < 3 && columnNodes[targetIndex + 1].value == columnNodes[i].value) {
-                        columnNodes[targetIndex + 1].value *= 2;
-                        setScore(columnNodes[targetIndex + 1].value);
-                        columnNodes[i] = null;
-                    } else {
-                        columnNodes[targetIndex--] = columnNodes[i];
-                    }
-                }
-            }
-
-            // Update positions and reattach the nodes
-            Node lastNode = null;
-            for (int i = 3; i > targetIndex; i--) {
-                columnNodes[i].row = i;
-                columnNodes[i].next = null;
-                if (lastNode == null) {
-                    if (head == null) {
-                        head = columnNodes[i];
-                    } else {
-                        Node temp = head;
-                        while (temp.next != null) {
-                            temp = temp.next;
-                        }
-                        temp.next = columnNodes[i];
-                    }
-                } else {
-                    lastNode.next = columnNodes[i];
-                }
-                lastNode = columnNodes[i];
-            }
-            if (targetIndex < 3) {
-                lastNode.next = null;
-            }
-        }
-        addNewTail();
-    }
 
     public void moveRight() {
-        for (int row = 0; row < 4; row++) {
-            Node[] rowNodes = new Node[4];
-            int index = 0;
-
-            // Collect nodes from the current row
-            Node current = head;
+        int [][] boardFirst = new int[4][4];
+        int [][] boardLast = new int[4][4];
+        // تمام گره هارو به صورت سطری جدا کنیم
+        for (int k = 0; k < 4; k++) {
+            Node original = head;
             Node previous = null;
-            while (current != null) {
-                if (current.row == row) {
-                    rowNodes[index++] = current;
+            Node [] rowNodes = new Node[4];
+            int indexRowNodes = 0;
+            while (original != null) {
+                if (original.row == k) {
+                    rowNodes[indexRowNodes] = original;
+                    indexRowNodes++;
                     if (previous == null) {
-                        head = current.next;
+                        head = original.next;
                     } else {
-                        previous.next = current.next;
+                        previous.next = original.next;
                     }
                 } else {
-                    previous = current;
+                    previous = original;
                 }
-                current = current.next;
+                original = original.next;
             }
 
-            // Move and combine nodes
-            int targetIndex = 3;
-            for (int i = index - 1; i >= 0; i--) {
-                if (rowNodes[i] != null) {
-                    if (targetIndex < 3 && rowNodes[targetIndex + 1].value == rowNodes[i].value) {
-                        rowNodes[targetIndex + 1].value *= 2;
-                        setScore(rowNodes[targetIndex + 1].value);
-                        rowNodes[i] = null; // Remove the combined node
-                    } else {
-                        rowNodes[targetIndex--] = rowNodes[i];
-                    }
+            //گره های جدا شده به صورت سطری را به ترتیب در جای مناسب در ارایه قرار دهیم
+            Node[] sortedRowNodes = new Node[4];
+            for (int i = 0; i < indexRowNodes; i++) {
+                sortedRowNodes[rowNodes[i].col] = rowNodes[i];
+            }
+            //تشکیل برد اولیه
+            for (int i = 0; i < 4; i++) {
+                if(sortedRowNodes[i] != null) {
+                    boardFirst[k][i] = sortedRowNodes[i].value;
                 }
             }
-
-            // Update positions and reattach the nodes
-            Node lastNode = null;
-            for (int i = 3; i > targetIndex; i--) {
-                rowNodes[i].col = i;
-                rowNodes[i].next = null;
-                if (lastNode == null) {
-                    if (head == null) {
-                        head = rowNodes[i];
-                    } else {
-                        Node temp = head;
-                        while (temp.next != null) {
-                            temp = temp.next;
+            //عملیات شیفت دادن برای اینکه هیچ خونه خالی بین اعداد در سمت راست باقی نمونه
+            for (int i = 2; i >= 0; i--) {
+                if (sortedRowNodes[i] != null) {
+                    for (int j = 3; j > i; j--) {
+                        if (sortedRowNodes[j] == null) {
+                            sortedRowNodes[j] = sortedRowNodes[i];
+                            sortedRowNodes[i] = null;
+                            break;
                         }
-                        temp.next = rowNodes[i];
+                    }
+                }
+            }
+            //اگر دوتا هم عدد بودن باید ضرب بشن و خونه اولیه باید نال بشه و بقیه شیفت بخورن
+            for (int i = 2; i >= 0; i--) {
+                if (sortedRowNodes[i] != null) {
+                    if (sortedRowNodes[i + 1].value == sortedRowNodes[i].value) {
+                        sortedRowNodes[i + 1].value *= 2;
+                        setScore(sortedRowNodes[i+1].value);
+                        sortedRowNodes[i] = null;
+                        for (int j = i - 1; j >= 0; j--) {
+                            sortedRowNodes[j + 1] = sortedRowNodes[j];
+                            sortedRowNodes[j] = null;
+                        }
                     }
                 } else {
-                    lastNode.next = rowNodes[i];
+                    break;
                 }
-                lastNode = rowNodes[i];
             }
-            if (targetIndex < 3) {
-                lastNode.next = null;
+            //تشکیل برد ثانویه
+            for (int i = 0; i < 4; i++) {
+                if(sortedRowNodes[i] != null) {
+                    boardLast[k][i] = sortedRowNodes[i].value;
+                }
+            }
+            //اضافه کردن خانه ها به اول لینکدلیست
+            for (int i = 0; i < 4; i++) {
+                if(sortedRowNodes[i] != null){
+                    Node newNode = new Node(sortedRowNodes[i].value, k, i);
+                    newNode.next = head;
+                    head = newNode;
+                }
             }
         }
-        addNewTail();
+        if(isSuccessful(boardFirst , boardLast)){
+            addNewTail();
+        }
     }
 
     public void moveLeft() {
-        for (int row = 0; row < 4; row++) {
-            Node[] rowNodes = new Node[4];
-            int index = 0;
+        int[][] boardFirst = new int[4][4];
+        int[][] boardLast = new int[4][4];
 
-            // Collect nodes from the current row
-            Node current = head;
+        for (int k = 0; k < 4; k++) {
+            Node original = head;
             Node previous = null;
-            while (current != null) {
-                if (current.row == row) {
-                    rowNodes[index++] = current;
+            Node[] rowNodes = new Node[4];
+            int indexRowNodes = 0;
+
+            while (original != null) {
+                if (original.row == k) {
+                    rowNodes[indexRowNodes] = original;
+                    indexRowNodes++;
                     if (previous == null) {
-                        head = current.next;
+                        head = original.next;
                     } else {
-                        previous.next = current.next;
+                        previous.next = original.next;
                     }
                 } else {
-                    previous = current;
+                    previous = original;
                 }
-                current = current.next;
+                original = original.next;
             }
 
-            // Move and combine nodes
-            int targetIndex = 0;
-            for (int i = 0; i < index; i++) {
-                if (rowNodes[i] != null) {
-                    if (targetIndex > 0 && rowNodes[targetIndex - 1].value == rowNodes[i].value) {
-                        rowNodes[targetIndex - 1].value *= 2;
-                        setScore(rowNodes[targetIndex - 1].value);
-                        rowNodes[i] = null; // Remove the combined node
-                    } else {
-                        rowNodes[targetIndex++] = rowNodes[i];
-                    }
+            Node[] sortedRowNodes = new Node[4];
+            for (int i = 0; i < indexRowNodes; i++) {
+                sortedRowNodes[rowNodes[i].col] = rowNodes[i];
+            }
+
+            for (int i = 0; i < 4; i++) {
+                if (sortedRowNodes[i] != null) {
+                    boardFirst[k][i] = sortedRowNodes[i].value;
                 }
             }
 
-            // Update positions and reattach the nodes
-            Node lastNode = null;
-            for (int i = 0; i < targetIndex; i++) {
-                rowNodes[i].col = i;
-                rowNodes[i].next = null;
-                if (lastNode == null) {
-                    if (head == null) {
-                        head = rowNodes[i];
-                    } else {
-                        Node temp = head;
-                        while (temp.next != null) {
-                            temp = temp.next;
+            for (int i = 1; i < 4; i++) {
+                if (sortedRowNodes[i] != null) {
+                    for (int j = 0; j < i; j++) {
+                        if (sortedRowNodes[j] == null) {
+                            sortedRowNodes[j] = sortedRowNodes[i];
+                            sortedRowNodes[i] = null;
+                            break;
                         }
-                        temp.next = rowNodes[i];
+                    }
+                }
+            }
+
+            for (int i = 1; i < 4; i++) {
+                if (sortedRowNodes[i] != null) {
+                    if (sortedRowNodes[i - 1].value == sortedRowNodes[i].value) {
+                        sortedRowNodes[i - 1].value *= 2;
+                        setScore(sortedRowNodes[i - 1].value);
+                        sortedRowNodes[i] = null;
+                        for (int j = i + 1; j < 4; j++) {
+                            sortedRowNodes[j - 1] = sortedRowNodes[j];
+                            sortedRowNodes[j] = null;
+                        }
                     }
                 } else {
-                    lastNode.next = rowNodes[i];
+                    break;
                 }
-                lastNode = rowNodes[i];
             }
-            if (targetIndex > 0) {
-                lastNode.next = null;
+
+            for (int i = 0; i < 4; i++) {
+                if (sortedRowNodes[i] != null) {
+                    boardLast[k][i] = sortedRowNodes[i].value;
+                }
+            }
+
+            for (int i = 3; i >= 0; i--) {
+                if (sortedRowNodes[i] != null) {
+                    Node newNode = new Node(sortedRowNodes[i].value, k, i);
+                    newNode.next = head;
+                    head = newNode;
+                }
             }
         }
-        addNewTail();
+
+        if (isSuccessful(boardFirst, boardLast)) {
+            addNewTail();
+        }
+    }
+
+    public void moveUp() {
+        int[][] boardFirst = new int[4][4];
+        int[][] boardLast = new int[4][4];
+
+        for (int k = 0; k < 4; k++) {
+            Node original = head;
+            Node previous = null;
+            Node[] colNodes = new Node[4];
+            int indexColNodes = 0;
+
+            while (original != null) {
+                if (original.col == k) {
+                    colNodes[indexColNodes] = original;
+                    indexColNodes++;
+                    if (previous == null) {
+                        head = original.next;
+                    } else {
+                        previous.next = original.next;
+                    }
+                } else {
+                    previous = original;
+                }
+                original = original.next;
+            }
+
+            Node[] sortedColNodes = new Node[4];
+            for (int i = 0; i < indexColNodes; i++) {
+                sortedColNodes[colNodes[i].row] = colNodes[i];
+            }
+
+            for (int i = 0; i < 4; i++) {
+                if (sortedColNodes[i] != null) {
+                    boardFirst[i][k] = sortedColNodes[i].value;
+                }
+            }
+
+            for (int i = 1; i < 4; i++) {
+                if (sortedColNodes[i] != null) {
+                    for (int j = 0; j < i; j++) {
+                        if (sortedColNodes[j] == null) {
+                            sortedColNodes[j] = sortedColNodes[i];
+                            sortedColNodes[i] = null;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            for (int i = 1; i < 4; i++) {
+                if (sortedColNodes[i] != null) {
+                    if (sortedColNodes[i - 1].value == sortedColNodes[i].value) {
+                        sortedColNodes[i - 1].value *= 2;
+                        setScore(sortedColNodes[i - 1].value);
+                        sortedColNodes[i] = null;
+                        for (int j = i + 1; j < 4; j++) {
+                            sortedColNodes[j - 1] = sortedColNodes[j];
+                            sortedColNodes[j] = null;
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
+
+            for (int i = 0; i < 4; i++) {
+                if (sortedColNodes[i] != null) {
+                    boardLast[i][k] = sortedColNodes[i].value;
+                }
+            }
+
+            for (int i = 3; i >= 0; i--) {
+                if (sortedColNodes[i] != null) {
+                    Node newNode = new Node(sortedColNodes[i].value, i, k);
+                    newNode.next = head;
+                    head = newNode;
+                }
+            }
+        }
+
+        if (isSuccessful(boardFirst, boardLast)) {
+            addNewTail();
+        }
+    }
+
+    public void moveDown() {
+        int[][] boardFirst = new int[4][4];
+        int[][] boardLast = new int[4][4];
+
+        for (int k = 0; k < 4; k++) {
+            Node original = head;
+            Node previous = null;
+            Node[] colNodes = new Node[4];
+            int indexColNodes = 0;
+
+            while (original != null) {
+                if (original.col == k) {
+                    colNodes[indexColNodes] = original;
+                    indexColNodes++;
+                    if (previous == null) {
+                        head = original.next;
+                    } else {
+                        previous.next = original.next;
+                    }
+                } else {
+                    previous = original;
+                }
+                original = original.next;
+            }
+
+            Node[] sortedColNodes = new Node[4];
+            for (int i = 0; i < indexColNodes; i++) {
+                sortedColNodes[colNodes[i].row] = colNodes[i];
+            }
+
+            for (int i = 0; i < 4; i++) {
+                if (sortedColNodes[i] != null) {
+                    boardFirst[i][k] = sortedColNodes[i].value;
+                }
+            }
+
+            for (int i = 2; i >= 0; i--) {
+                if (sortedColNodes[i] != null) {
+                    for (int j = 3; j > i; j--) {
+                        if (sortedColNodes[j] == null) {
+                            sortedColNodes[j] = sortedColNodes[i];
+                            sortedColNodes[i] = null;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            for (int i = 2; i >= 0; i--) {
+                if (sortedColNodes[i] != null) {
+                    if (sortedColNodes[i + 1].value == sortedColNodes[i].value) {
+                        sortedColNodes[i + 1].value *= 2;
+                        setScore(sortedColNodes[i + 1].value);
+                        sortedColNodes[i] = null;
+                        for (int j = i - 1; j >= 0; j--) {
+                            sortedColNodes[j + 1] = sortedColNodes[j];
+                            sortedColNodes[j] = null;
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
+
+            for (int i = 0; i < 4; i++) {
+                if (sortedColNodes[i] != null) {
+                    boardLast[i][k] = sortedColNodes[i].value;
+                }
+            }
+
+            for (int i = 3; i >= 0; i--) {
+                if (sortedColNodes[i] != null) {
+                    Node newNode = new Node(sortedColNodes[i].value, i, k);
+                    newNode.next = head;
+                    head = newNode;
+                }
+            }
+        }
+
+        if (isSuccessful(boardFirst, boardLast)) {
+            addNewTail();
+        }
     }
 
     public void addNewTail(){
@@ -439,5 +495,33 @@ public class HelloController implements Initializable {
         }
     }
 
+
+
+    public void ClickOnUndo (ActionEvent e) throws Exception {
+        if(countUndo == 5){
+            JOptionPane.showMessageDialog(null, "you can't press undo more than 5 times!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            Redo.push(head);
+            head = Undo.pop();
+            Display();
+        }
+    }
+    public void ClickOnRedo (ActionEvent e) throws Exception {
+
+    }
+
+    public boolean isSuccessful (int [][] first , int [][] last){
+        boolean sw = false ;
+        for (int i = 0; i < 4 && !sw ; i++) {
+            for (int j = 0; j < 4; j++) {
+                if(first[i][j] != last[i][j]){
+                    sw = true;
+                    break;
+                }
+            }
+        }
+        return sw ;
+    }
 
 }
