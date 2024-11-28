@@ -35,6 +35,7 @@ public class HelloController implements Initializable {
     }
 
     public void moveRight() {
+        Node firstHead = copyList(head);
         int [][] boardFirst = new int[4][4];
         int [][] boardLast = new int[4][4];
         // تمام گره هارو به صورت سطری جدا کنیم
@@ -114,10 +115,12 @@ public class HelloController implements Initializable {
         }
         if(isSuccessful(boardFirst , boardLast)){
             addNewTail();
+            Undo.push(firstHead);
         }
     }
 
     public void moveLeft() {
+        Node firstHead = copyList(head);
         int[][] boardFirst = new int[4][4];
         int[][] boardLast = new int[4][4];
 
@@ -198,10 +201,12 @@ public class HelloController implements Initializable {
 
         if (isSuccessful(boardFirst, boardLast)) {
             addNewTail();
+            Undo.push(firstHead);
         }
     }
 
     public void moveUp() {
+        Node firstHead = copyList(head);
         int[][] boardFirst = new int[4][4];
         int[][] boardLast = new int[4][4];
 
@@ -282,10 +287,12 @@ public class HelloController implements Initializable {
 
         if (isSuccessful(boardFirst, boardLast)) {
             addNewTail();
+            Undo.push(firstHead);
         }
     }
 
     public void moveDown() {
+        Node firstHead = copyList(head);
         int[][] boardFirst = new int[4][4];
         int[][] boardLast = new int[4][4];
 
@@ -366,6 +373,7 @@ public class HelloController implements Initializable {
 
         if (isSuccessful(boardFirst, boardLast)) {
             addNewTail();
+            Undo.push(firstHead);
         }
     }
 
@@ -508,7 +516,14 @@ public class HelloController implements Initializable {
         }
     }
     public void ClickOnRedo (ActionEvent e) throws Exception {
-
+        if(countUndo == 5){
+            JOptionPane.showMessageDialog(null, "you can't press redo more than 5 times!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            Undo.push(head);
+            head = Redo.pop();
+            Display();
+        }
     }
 
     public boolean isSuccessful (int [][] first , int [][] last){
@@ -522,6 +537,19 @@ public class HelloController implements Initializable {
             }
         }
         return sw ;
+    }
+
+    public Node copyList(Node head) {
+        if (head == null) return null;
+        Node newHead = new Node(head.value, head.row, head.col);
+        Node current = head.next;
+        Node currentNew = newHead;
+        while (current != null) {
+            currentNew.next = new Node(current.value, current.row, current.col);
+            currentNew = currentNew.next;
+            current = current.next;
+        }
+        return newHead;
     }
 
 }

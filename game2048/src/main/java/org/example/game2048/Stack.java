@@ -7,14 +7,24 @@ public class Stack {
         this.top = null ;
     }
     public void push (Node X){
-        X.next = top;
-        top = X;
+        if(top == null){
+            top = X;
+        }
+        else {
+            X.next = top;
+            top = X;
+        }
+
     }
 
     public Node pop (){
-        Node X = top;
-        top = top.next;
-        return X;
+        if(top == null){
+            return null;
+        }
+        else {
+            Node X = top;
+            top = top.next;
+            return X;
+        }
     }
-
 }
