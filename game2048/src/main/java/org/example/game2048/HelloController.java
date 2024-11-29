@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.Scanner;
+import java.util.Stack;
 import javax.swing.JOptionPane;
 
 public class HelloController implements Initializable {
@@ -15,8 +17,10 @@ public class HelloController implements Initializable {
     @FXML
     public Label score;
     Node head;
-    Stack Undo = new Stack();
-    Stack Redo = new Stack();
+    public Stack<Node> Undo = new Stack<>();
+    public  Stack<Integer> RedoScore = new Stack<>();
+    public  Stack<Integer> UndoScore = new Stack<>();
+    public Stack<Node> Redo = new Stack<>();
     int countUndo = 0;
     int countRedo = 0;
 
@@ -36,6 +40,7 @@ public class HelloController implements Initializable {
 
     public void moveRight() {
         Node firstHead = copyList(head);
+        int firstScore = Integer.parseInt(score.getText());
         int [][] boardFirst = new int[4][4];
         int [][] boardLast = new int[4][4];
         // تمام گره هارو به صورت سطری جدا کنیم
@@ -116,11 +121,16 @@ public class HelloController implements Initializable {
         if(isSuccessful(boardFirst , boardLast)){
             addNewTail();
             Undo.push(firstHead);
+            UndoScore.push(firstScore);
+        }
+        if (hasWon() && Integer.parseInt(score.getText()) >= 2048) {
+            JOptionPane.showMessageDialog(null, "Congratulations! You've won the game!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
     public void moveLeft() {
         Node firstHead = copyList(head);
+        int firstScore = Integer.parseInt(score.getText());
         int[][] boardFirst = new int[4][4];
         int[][] boardLast = new int[4][4];
 
@@ -202,11 +212,16 @@ public class HelloController implements Initializable {
         if (isSuccessful(boardFirst, boardLast)) {
             addNewTail();
             Undo.push(firstHead);
+            UndoScore.push(firstScore);
+        }
+        if (hasWon() && Integer.parseInt(score.getText()) >= 2048) {
+            JOptionPane.showMessageDialog(null, "Congratulations! You've won the game!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
     public void moveUp() {
         Node firstHead = copyList(head);
+        int firstScore = Integer.parseInt(score.getText());
         int[][] boardFirst = new int[4][4];
         int[][] boardLast = new int[4][4];
 
@@ -288,11 +303,16 @@ public class HelloController implements Initializable {
         if (isSuccessful(boardFirst, boardLast)) {
             addNewTail();
             Undo.push(firstHead);
+            UndoScore.push(firstScore);
+        }
+        if (hasWon() && Integer.parseInt(score.getText()) >= 2048) {
+            JOptionPane.showMessageDialog(null, "Congratulations! You've won the game!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
     public void moveDown() {
         Node firstHead = copyList(head);
+        int firstScore = Integer.parseInt(score.getText());
         int[][] boardFirst = new int[4][4];
         int[][] boardLast = new int[4][4];
 
@@ -374,6 +394,10 @@ public class HelloController implements Initializable {
         if (isSuccessful(boardFirst, boardLast)) {
             addNewTail();
             Undo.push(firstHead);
+            UndoScore.push(firstScore);
+        }
+        if (hasWon() && Integer.parseInt(score.getText()) >= 2048) {
+            JOptionPane.showMessageDialog(null, "Congratulations! You've won the game!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -510,19 +534,29 @@ public class HelloController implements Initializable {
             JOptionPane.showMessageDialog(null, "you can't press undo more than 5 times!", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else {
-            Redo.push(head);
-            head = Undo.pop();
-            Display();
+            if(!Undo.isEmpty() && !UndoScore.isEmpty() ) {
+                Redo.push(head);
+                RedoScore.push(Integer.parseInt(score.getText()));
+                head = Undo.pop();
+                score.setText(String.valueOf(UndoScore.pop()));
+                countUndo++;
+                Display();
+            }
         }
     }
     public void ClickOnRedo (ActionEvent e) throws Exception {
-        if(countUndo == 5){
+        if(countRedo == 5){
             JOptionPane.showMessageDialog(null, "you can't press redo more than 5 times!", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else {
-            Undo.push(head);
-            head = Redo.pop();
-            Display();
+            if(!Redo.isEmpty() && !RedoScore.isEmpty()) {
+                Undo.push(head);
+                UndoScore.push(Integer.parseInt(score.getText()));
+                head = Redo.pop();
+                score.setText(String.valueOf(RedoScore.pop()));
+                countRedo++;
+                Display();
+            }
         }
     }
 
@@ -551,5 +585,39 @@ public class HelloController implements Initializable {
         }
         return newHead;
     }
+
+    public boolean hasWon() {
+        if (Integer.parseInt(score.getText()) >= 2048){
+            return true;
+        }
+
+        for (int k = 0; k < 4; k++) {
+            for (int j = 0; j < 4; j++) {
+                if (canMove(k, j)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean canMove(int row, int col) {
+        Node current = head;
+        int[][] board = new int[4][4];
+        while (current != null) {
+            board[current.row][current.col] = current.value;
+            current = current.next;
+        }
+        if (board[row][col] == 0) {
+            return true;
+        }
+        if (row > 0 && board[row - 1][col] == board[row][col]) return true; // Up
+        if (row < 3 && board[row + 1][col] == board[row][col]) return true; // Down
+        if (col > 0 && board[row][col - 1] == board[row][col]) return true; // Left
+        if (col < 3 && board[row][col + 1] == board[row][col]) return true; // Right
+
+        return false;
+    }
+
 
 }

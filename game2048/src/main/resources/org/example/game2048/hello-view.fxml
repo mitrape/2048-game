@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="687.0" prefWidth="820.0" style="-fx-background-color: #475c3f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.game2048.HelloController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="687.0" prefWidth="820.0" style="-fx-background-color: #1e3d59;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.game2048.HelloController">
    <children>
-      <GridPane hgap="10.0" layoutX="150.0" layoutY="165.0" prefHeight="438.0" prefWidth="526.0" style="-fx-background-color: #475c3f;" vgap="10.0">
+      <GridPane hgap="10.0" layoutX="150.0" layoutY="165.0" prefHeight="438.0" prefWidth="526.0" style="-fx-background-color: #1e3d59;" vgap="10.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -28,89 +28,89 @@
             <Cursor fx:constant="HAND" />
          </cursor>
          <children>
-            <Label fx:id="l00" alignment="CENTER" layoutX="279.0" layoutY="236.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048">
+            <Label fx:id="l00" alignment="CENTER" layoutX="279.0" layoutY="236.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l01" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.columnIndex="1">
+            <Label fx:id="l01" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.columnIndex="1">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l02" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.columnIndex="2">
+            <Label fx:id="l02" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.columnIndex="2">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l03" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.columnIndex="3">
+            <Label fx:id="l03" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.columnIndex="3">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l10" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.rowIndex="1">
+            <Label fx:id="l10" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.rowIndex="1">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l11" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label fx:id="l11" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l12" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Label fx:id="l12" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l13" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.columnIndex="3" GridPane.rowIndex="1">
+            <Label fx:id="l13" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.columnIndex="3" GridPane.rowIndex="1">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l20" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.rowIndex="2">
+            <Label fx:id="l20" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.rowIndex="2">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l21" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Label fx:id="l21" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l22" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <Label fx:id="l22" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l23" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.columnIndex="3" GridPane.rowIndex="2">
+            <Label fx:id="l23" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.columnIndex="3" GridPane.rowIndex="2">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l30" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.rowIndex="3">
+            <Label fx:id="l30" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.rowIndex="3">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l31" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <Label fx:id="l31" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l32" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <Label fx:id="l32" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="l33" alignment="CENTER" layoutX="279.0" layoutY="348.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="2048" GridPane.columnIndex="3" GridPane.rowIndex="3">
+            <Label fx:id="l33" alignment="CENTER" layoutX="279.0" layoutY="348.0" prefHeight="255.0" prefWidth="255.0" style="-fx-background-color: #ffc13b; -fx-background-radius: 8;" text="2048" textFill="#1e3d59" GridPane.columnIndex="3" GridPane.rowIndex="3">
                <font>
                   <Font name="Segoe Script" size="32.0" />
                </font>
             </Label>
          </children>
       </GridPane>
-      <Button layoutX="635.0" layoutY="37.0" mnemonicParsing="false" onAction="#ClickOnUndo" prefWidth="68.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="Undo">
+      <Button layoutX="711.0" layoutY="21.0" mnemonicParsing="false" onAction="#ClickOnUndo" prefHeight="30.0" prefWidth="84.0" style="-fx-background-color: #ff6e40;" text="Undo" textFill="#f5f0e1">
          <font>
             <Font name="Segoe Script Bold" size="12.0" />
          </font>
@@ -118,17 +118,17 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Label alignment="CENTER" layoutX="32.0" layoutY="32.0" prefHeight="40.0" prefWidth="162.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="SCORE ">
+      <Label alignment="CENTER" layoutX="32.0" layoutY="32.0" prefHeight="40.0" prefWidth="162.0" style="-fx-background-color: transparent; -fx-background-radius: 8;" text="SCORE " textFill="#f5f0e1">
          <font>
-            <Font name="Segoe Script Bold" size="22.0" />
+            <Font name="Segoe Script Bold" size="26.0" />
          </font>
       </Label>
-      <Label fx:id="score" alignment="CENTER" layoutX="212.0" layoutY="32.0" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 7;" text="0">
+      <Label fx:id="score" alignment="CENTER" layoutX="202.0" layoutY="35.0" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #f5f0e1; -fx-background-radius: 7;" text="0">
          <font>
             <Font name="Segoe Script" size="22.0" />
          </font>
       </Label>
-      <Button layoutX="722.0" layoutY="37.0" mnemonicParsing="false" onAction="#ClickOnRedo" prefWidth="68.0" style="-fx-background-color: #dbdaab; -fx-background-radius: 8;" text="Redo">
+      <Button layoutX="711.0" layoutY="72.0" mnemonicParsing="false" onAction="#ClickOnRedo" prefHeight="32.0" prefWidth="84.0" style="-fx-background-color: #ffc13b;" text="Redo" textFill="#f5f0e1">
          <font>
             <Font name="Segoe Script Bold" size="12.0" />
          </font>
